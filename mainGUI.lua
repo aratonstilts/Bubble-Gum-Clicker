@@ -32,12 +32,14 @@ local function claimChests()
     }
     for i,v in pairs(chestPositions) do
         HR.CFrame = CFrame.new(v)
-        task.wait(0.2)
         Humanoid:MoveTo(HR.Position + Vector3.new(0,0,-20))
         Humanoid.MoveToFinished:Wait()
     end
     
-    HR.CFrame = originalCFrame
+    for i = 1,2 do
+        HR.CFrame = originalCFrame
+        task.wait(0.3)
+    end
 end
 
 local function blowBubble()
