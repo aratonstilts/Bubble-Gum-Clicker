@@ -54,6 +54,77 @@ local function blowBubble()
     game:GetService("ReplicatedStorage"):WaitForChild("Remotes"):WaitForChild("blow bubble"):FireServer(unpack(args))
 end
 
+
+local function getPetFromInventory(pet)
+    local pets = {}
+    
+    for i,v in pairs(PlayerGui.Inventory.Frame.Container.Pets:GetChildren()) do
+        if v:FindFirstChild("PetName") and v.PetName.Text == pet then
+            table.insert(pets, v.Name)
+        end
+    end
+    
+    return pets
+end
+
+local function deletePet(pet)
+    local pets = getPetFromInventory(pet)
+    
+    
+    
+    local args = {
+    [1] = {
+        [1] = {
+            [1] = pets
+        },
+        [2] = {
+            [1] = false
+        }
+    }
+}
+
+game:GetService("ReplicatedStorage").Remotes["delete pets"]:FireServer(unpack(args))
+
+end
+
+local function getNonShinyPetFromInventory(pet, amount)
+    local pets = {}
+    
+    local count = 0
+    local color = BrickColor.new()
+    
+    for i,v in pairs(PlayerGui.Inventory.Frame.Container.Pets:GetChildren()) do
+        if v:FindFirstChild("PetName") and v.BackgroundColor3.r == 0 and v.PetName.Text == pet then
+            table.insert(pets, v.Name)
+            
+            print(i,v)
+            count = count + 1
+            if count == amount then break end
+            
+        end
+    end
+    
+    return pets
+end
+
+local function makePetShiny(pet, amount)
+    local pets = getNonShinyPetFromInventory(pet, amount)
+    
+    local args = {
+    [1] = {
+        [1] = {
+            [1] = pets
+        },
+        [2] = {
+            [1] = false
+        }
+    }
+}
+
+game:GetService("ReplicatedStorage").Remotes["make pets shiny"]:InvokeServer(unpack(args))
+
+end
+
 local function claimSpin()
     local args = {
     [1] = {
@@ -247,7 +318,7 @@ end)
 local textLabel2 = Instance.new("TextLabel")
 textLabel2.Parent = CmdHandler
 textLabel2.Size = UDim2.new(.8,0,.1,0)
-textLabel2.Position = UDim2.new(1, 0, 0.15, 0)
+textLabel2.Position = UDim2.new(1, 0, 1.05, 0)
 textLabel2.AnchorPoint = Vector2.new(1,0)
 textLabel2.Text = "Teleport Straight UP 500 studs"
 textLabel2.TextColor3 = Color3.new(1, 1, 1)
@@ -255,7 +326,7 @@ textLabel2.BackgroundTransparency = 1
 textLabel2.TextScaled = true
 
 local Item2 = Instance.new("TextButton")
-Item2.Position = UDim2.new(0.1,0,0.15,1)
+Item2.Position = UDim2.new(0.1,0,1.05,1)
 Item2.Size = UDim2.new(.1,0,.1,0)
 Item2.BackgroundColor3 = Color3.fromRGB(70,70,70)
 Item2.BorderColor3 = Color3.new(1,1,1)
@@ -273,7 +344,7 @@ end)
 local textLabel3 = Instance.new("TextLabel")
 textLabel3.Parent = CmdHandler
 textLabel3.Size = UDim2.new(.8,0,.1,0)
-textLabel3.Position = UDim2.new(1, 0, 0.3, 0)
+textLabel3.Position = UDim2.new(1, 0, 1.2, 0)
 textLabel3.AnchorPoint = Vector2.new(1,0)
 textLabel3.Text = "Sell Bubbles Once"
 textLabel3.TextColor3 = Color3.new(1, 1, 1)
@@ -281,7 +352,7 @@ textLabel3.BackgroundTransparency = 1
 textLabel3.TextScaled = true
 
 local Item3 = Instance.new("TextButton")
-Item3.Position = UDim2.new(0.1,0,0.30,1)
+Item3.Position = UDim2.new(0.1,0,1.2,1)
 Item3.Size = UDim2.new(.1,0,.1,0)
 Item3.BackgroundColor3 = Color3.fromRGB(70,70,70)
 Item3.BorderColor3 = Color3.new(1,1,1)
@@ -331,7 +402,7 @@ end)
 local textLabel5 = Instance.new("TextLabel")
 textLabel5.Parent = CmdHandler
 textLabel5.Size = UDim2.new(.8,0,.1,0)
-textLabel5.Position = UDim2.new(1, 0, 0.6, 0)
+textLabel5.Position = UDim2.new(1, 0, 0.15, 0)
 textLabel5.AnchorPoint = Vector2.new(1,0)
 textLabel5.Text = "Auto Prize Wheel"
 textLabel5.TextColor3 = Color3.new(1, 1, 1)
@@ -339,7 +410,7 @@ textLabel5.BackgroundTransparency = 1
 textLabel5.TextScaled = true
 
 local Item5 = Instance.new("TextButton")
-Item5.Position = UDim2.new(0.1,0,0.6,1)
+Item5.Position = UDim2.new(0.1,0,0.15,1)
 Item5.Size = UDim2.new(.1,0,.1,0)
 Item5.BackgroundColor3 = Color3.fromRGB(70,70,70)
 Item5.BorderColor3 = Color3.new(1,1,1)
@@ -364,7 +435,7 @@ end)
 local textLabel6 = Instance.new("TextLabel")
 textLabel6.Parent = CmdHandler
 textLabel6.Size = UDim2.new(.8,0,.1,0)
-textLabel6.Position = UDim2.new(1, 0, 0.75, 0)
+textLabel6.Position = UDim2.new(1, 0, 0.3, 0)
 textLabel6.AnchorPoint = Vector2.new(1,0)
 textLabel6.Text = "Auto Claim Chests (main area)"
 textLabel6.TextColor3 = Color3.new(1, 1, 1)
@@ -372,7 +443,7 @@ textLabel6.BackgroundTransparency = 1
 textLabel6.TextScaled = true
 
 local Item6 = Instance.new("TextButton")
-Item6.Position = UDim2.new(0.1,0,0.75,1)
+Item6.Position = UDim2.new(0.1,0,0.3,1)
 Item6.Size = UDim2.new(.1,0,.1,0)
 Item6.BackgroundColor3 = Color3.fromRGB(70,70,70)
 Item6.BorderColor3 = Color3.new(1,1,1)
@@ -397,7 +468,7 @@ end)
 local textLabel7 = Instance.new("TextLabel")
 textLabel7.Parent = CmdHandler
 textLabel7.Size = UDim2.new(.8,0,.1,0)
-textLabel7.Position = UDim2.new(1, 0, 0.9, 0)
+textLabel7.Position = UDim2.new(1, 0, 0.6, 0)
 textLabel7.AnchorPoint = Vector2.new(1,0)
 textLabel7.Text = "Open Season 2 Egg"
 textLabel7.TextColor3 = Color3.new(1, 1, 1)
@@ -405,7 +476,7 @@ textLabel7.BackgroundTransparency = 1
 textLabel7.TextScaled = true
 
 local Item7 = Instance.new("TextButton")
-Item7.Position = UDim2.new(0.1,0,0.9,1)
+Item7.Position = UDim2.new(0.1,0,0.6,1)
 Item7.Size = UDim2.new(.1,0,.1,0)
 Item7.BackgroundColor3 = Color3.fromRGB(70,70,70)
 Item7.BorderColor3 = Color3.new(1,1,1)
@@ -424,6 +495,86 @@ Item7.MouseButton1Click:Connect(function()
         return
     end
     Item7.BackgroundColor3 = Color3.fromRGB(70,70,70)
+end)
+
+
+local textLabel8 = Instance.new("TextLabel")
+textLabel8.Parent = CmdHandler
+textLabel8.Size = UDim2.new(.8,0,.1,0)
+textLabel8.Position = UDim2.new(1, 0, 0.75, 0)
+textLabel8.AnchorPoint = Vector2.new(1,0)
+textLabel8.Text = "Auto Delete S2 Imp"
+textLabel8.TextColor3 = Color3.new(1, 1, 1)
+textLabel8.BackgroundTransparency = 1
+textLabel8.TextScaled = true
+
+local Item8 = Instance.new("TextButton")
+Item8.Position = UDim2.new(0.1,0,0.75,1)
+Item8.Size = UDim2.new(.1,0,.1,0)
+Item8.BackgroundColor3 = Color3.fromRGB(70,70,70)
+Item8.BorderColor3 = Color3.new(1,1,1)
+Item8.ZIndex = 2
+Item8.Parent = CmdHandler
+Item8.Text = ""
+Item8.TextColor3 = Color3.fromRGB(250,250,250)
+Item8.TextScaled = true
+Item8.MouseButton1Click:Connect(function()
+    if Item8.BackgroundColor3 == Color3.fromRGB(70,70,70) then
+        Item8.BackgroundColor3 = Color3.fromRGB(200,70,70)
+        repeat
+            deletePet("S2 Imp")
+            task.wait(60)
+        until Item8.BackgroundColor3 == Color3.fromRGB(70,70,70) or _G.CLOSED
+        return
+    end
+    Item8.BackgroundColor3 = Color3.fromRGB(70,70,70)
+end)
+
+
+local textLabel9 = Instance.new("TextLabel")
+textLabel9.Parent = CmdHandler
+textLabel9.Size = UDim2.new(.55,0,.1,0)
+textLabel9.Position = UDim2.new(.65, 0, 0.9, 0)
+textLabel9.AnchorPoint = Vector2.new(.8,0)
+textLabel9.Text = "Make Hellhounds Shiny"
+textLabel9.TextColor3 = Color3.new(1, 1, 1)
+textLabel9.BackgroundTransparency = 1
+textLabel9.TextScaled = true
+
+local textBox9 = Instance.new("TextBox")
+textBox9.Position = UDim2.new(1, 0, 0.9, 0)
+textBox9.Size = UDim2.new(.2,0,.1,0)
+textBox9.BackgroundColor3 = Color3.fromRGB(50,50,50)
+textBox9.BorderSizePixel = 1
+textBox9.BorderColor3 = Color3.new(1,1,1)
+textBox9.AnchorPoint = Vector2.new(1,0)
+textBox9.ZIndex = 2
+textBox9.Parent = CmdHandler
+textBox9.Text = ""
+textBox9.PlaceholderText = "Amount to use"
+textBox9.TextColor3 = Color3.fromRGB(250,250,250)
+textBox9.TextScaled = true
+
+local Item9 = Instance.new("TextButton")
+Item9.Position = UDim2.new(0.1,0,0.9,1)
+Item9.Size = UDim2.new(.1,0,.1,0)
+Item9.BackgroundColor3 = Color3.fromRGB(70,70,70)
+Item9.BorderColor3 = Color3.new(1,1,1)
+Item9.ZIndex = 2
+Item9.Parent = CmdHandler
+Item9.Text = ""
+Item9.TextColor3 = Color3.fromRGB(250,250,250)
+Item9.TextScaled = true
+Item9.MouseButton1Click:Connect(function()
+    if Item9.BackgroundColor3 == Color3.fromRGB(70,70,70) then
+        Item9.BackgroundColor3 = Color3.fromRGB(200,70,70)
+        repeat
+            makePetShiny("S2 Hellhound", tonumber(textBox9.Text))
+            task.wait(60)
+        until Item9.BackgroundColor3 == Color3.fromRGB(70,70,70) or _G.CLOSED
+        return
+    end
+    Item9.BackgroundColor3 = Color3.fromRGB(70,70,70)
 end)
 
 end
