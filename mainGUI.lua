@@ -28,7 +28,8 @@ local function claimChests()
     Vector3.new(-399, 33374, -605), -- void chest
     Vector3.new(-399, 11342, -561), --Heaven Chest
     Vector3.new(-393, 963, -581), -- first chest
-    Vector3.new(-593, 10, -536) -- VIP Chest
+    Vector3.new(-593, 10, -536), -- VIP Chest
+    Vector3.new(-386, 10, -317) -- Luck area
     }
     for i,v in pairs(chestPositions) do
         HR.CFrame = CFrame.new(v)
@@ -54,6 +55,39 @@ local function blowBubble()
     }
     }
     game:GetService("ReplicatedStorage"):WaitForChild("Remotes"):WaitForChild("blow bubble"):FireServer(unpack(args))
+end
+
+
+local function getPickupFolders()
+    local diamonds = {}
+for i,v in pairs(game.Workspace.Stuff.Pickups:GetChildren()) do
+    table.insert(diamonds, v)
+end
+return diamonds
+end
+
+local function getRainbows()
+    local pickupFolders = getPickupFolders()
+    local rainbows = {}
+    for i,v in pairs(pickupFolders) do
+        if v:FindFirstChild("Pot O' Gold") or v:FindFirstChild("Rainbow") then
+            table.insert(rainbows, v:GetChildren()[1])
+        end
+    end
+    
+    table.sort(rainbows, function(t1, t2) 
+		return Player:DistanceFromCharacter(t1.Position) < Player:DistanceFromCharacter(t2.Position) end)
+    
+    return rainbows
+end
+
+local function walkToClosestRainbow()
+    
+    local rainbow = getRainbows()[1]
+    
+    Humanoid:MoveTo(rainbow.Position)
+    Humanoid.MoveToFinished:Wait()
+    
 end
 
 
@@ -99,7 +133,6 @@ local function getNonShinyPetFromInventory(pet, amount)
         if v:FindFirstChild("PetName") and v.BackgroundColor3.r == 0 and v.PetName.Text == pet then
             table.insert(pets, v.Name)
             
-            print(i,v)
             count = count + 1
             if count == amount then break end
             
@@ -371,7 +404,7 @@ end)
 local textLabel4 = Instance.new("TextLabel")
 textLabel4.Parent = CmdHandler
 textLabel4.Size = UDim2.new(.8,0,.1,0)
-textLabel4.Position = UDim2.new(1, 0, 0.45, 0)
+textLabel4.Position = UDim2.new(1, 0, 1.3, 0)
 textLabel4.AnchorPoint = Vector2.new(1,0)
 textLabel4.Text = "Sell Bubbles Every 2 Minutes"
 textLabel4.TextColor3 = Color3.new(1, 1, 1)
@@ -379,7 +412,7 @@ textLabel4.BackgroundTransparency = 1
 textLabel4.TextScaled = true
 
 local Item4 = Instance.new("TextButton")
-Item4.Position = UDim2.new(0.1,0,0.45,1)
+Item4.Position = UDim2.new(0.1,0,1.3,1)
 Item4.Size = UDim2.new(.1,0,.1,0)
 Item4.BackgroundColor3 = Color3.fromRGB(70,70,70)
 Item4.BorderColor3 = Color3.new(1,1,1)
@@ -577,6 +610,39 @@ Item9.MouseButton1Click:Connect(function()
         return
     end
     Item9.BackgroundColor3 = Color3.fromRGB(70,70,70)
+end)
+
+
+local textLabel10 = Instance.new("TextLabel")
+textLabel10.Parent = CmdHandler
+textLabel10.Size = UDim2.new(.8,0,.1,0)
+textLabel10.Position = UDim2.new(1, 0, 0.45, 0)
+textLabel10.AnchorPoint = Vector2.new(1,0)
+textLabel10.Text = "Auto Walk To Rainbow Currency"
+textLabel10.TextColor3 = Color3.new(1, 1, 1)
+textLabel10.BackgroundTransparency = 1
+textLabel10.TextScaled = true
+
+local Item10 = Instance.new("TextButton")
+Item10.Position = UDim2.new(0.1,0,0.45,1)
+Item10.Size = UDim2.new(.1,0,.1,0)
+Item10.BackgroundColor3 = Color3.fromRGB(70,70,70)
+Item10.BorderColor3 = Color3.new(1,1,1)
+Item10.ZIndex = 2
+Item10.Parent = CmdHandler
+Item10.Text = ""
+Item10.TextColor3 = Color3.fromRGB(250,250,250)
+Item10.TextScaled = true
+Item10.MouseButton1Click:Connect(function()
+    if Item10.BackgroundColor3 == Color3.fromRGB(70,70,70) then
+        Item10.BackgroundColor3 = Color3.fromRGB(200,70,70)
+        repeat
+            walkToClosestRainbow()
+            task.wait()
+        until Item10.BackgroundColor3 == Color3.fromRGB(70,70,70) or _G.CLOSED
+        return
+    end
+    Item10.BackgroundColor3 = Color3.fromRGB(70,70,70)
 end)
 
 end
