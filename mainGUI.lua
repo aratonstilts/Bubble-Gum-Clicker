@@ -14,6 +14,8 @@ local PlayerGui = Player.PlayerGui
 local Character = Player.Character
 local Humanoid = Character.Humanoid
 local HR = Character.HumanoidRootPart
+
+local Noclipping
 _G.CLOSED = true
 
 print("looks like", Player, "and mouse is connected!")
@@ -29,7 +31,7 @@ local function claimChests()
     Vector3.new(-399, 11342, -561), --Heaven Chest
     Vector3.new(-393, 963, -581), -- first chest
     Vector3.new(-593, 10, -536), -- VIP Chest
-    Vector3.new(-386, 10, -317) -- Luck area
+    Vector3.new(-386, 10, -297) -- Luck area
     }
     for i,v in pairs(chestPositions) do
         HR.CFrame = CFrame.new(v)
@@ -40,6 +42,16 @@ local function claimChests()
     for i = 1,2 do
         HR.CFrame = originalCFrame
         task.wait(0.3)
+    end
+end
+
+local function NoclipLoop()
+    if noClip == true then
+        for _, child in pairs(Character:GetDescendants()) do
+            if child:IsA("BasePart") and child.CanCollide == true and child.Name ~= floatName then
+                child.CanCollide = false
+            end
+    	end
     end
 end
 
@@ -81,9 +93,17 @@ local function getRainbows()
     return rainbows
 end
 
-local function walkToClosestRainbow()
+local function walkToClosestRainbow(moving)
     
-    local rainbow = getRainbows()[1]
+    if moving then
+        local rainbow = getRainbows()[1]
+    
+        Humanoid:MoveTo(rainbow.Position)
+        Humanoid.MoveToFinished:Wait()
+        return
+    end
+    
+    local rainbow = getRainbows()[2]
     
     Humanoid:MoveTo(rainbow.Position)
     Humanoid.MoveToFinished:Wait()
@@ -173,6 +193,22 @@ local function claimSpin()
 }
 
 game:GetService("ReplicatedStorage"):WaitForChild("Remotes"):WaitForChild("free wheel spin"):InvokeServer(unpack(args))
+
+
+local args = {
+    [1] = {
+        [1] = {
+            [1] = false
+        },
+        [2] = {
+            [1] = 2
+        }
+    }
+}
+
+game:GetService("ReplicatedStorage"):WaitForChild("Remotes"):WaitForChild("free event wheel spin"):InvokeServer(unpack(args))
+
+
 end
 
 
@@ -313,6 +349,10 @@ Close.Text = "X"
 Close.TextColor3 = Color3.fromRGB(255, 255, 255)
 Close.TextSize = 14.000
 Close.MouseButton1Click:Connect(function()
+    if noClip == true then
+        Noclipping:Disconnect()
+        noClip = false
+    end
     _G.CLOSED = true
     CmdGui:Destroy()
 end)
@@ -459,7 +499,7 @@ Item5.MouseButton1Click:Connect(function()
         Item5.BackgroundColor3 = Color3.fromRGB(200,70,70)
         repeat
             claimSpin()
-            task.wait(10)
+            task.wait(300)
         until Item5.BackgroundColor3 == Color3.fromRGB(70,70,70) or _G.CLOSED
         return
     end
@@ -635,11 +675,32 @@ Item10.TextColor3 = Color3.fromRGB(250,250,250)
 Item10.TextScaled = true
 Item10.MouseButton1Click:Connect(function()
     if Item10.BackgroundColor3 == Color3.fromRGB(70,70,70) then
+        Noclipping = game:GetService('RunService').Stepped:Connect(NoclipLoop)
+        noClip = true
+        
+        local pos
+        local notMoving = 0
         Item10.BackgroundColor3 = Color3.fromRGB(200,70,70)
         repeat
-            walkToClosestRainbow()
+            if HR.Position == pos then
+                notMoving = notMoving + 1
+            else
+                notMoving = 1
+            end
+            
+            pos = HR.Position
+            
+            if notMoving < 10 then
+                walkToClosestRainbow(true)
+            else
+                walkToClosestRainbow(false)
+            end
+            
             task.wait()
         until Item10.BackgroundColor3 == Color3.fromRGB(70,70,70) or _G.CLOSED
+        
+        Noclipping:Disconnect()
+        noClip = false
         return
     end
     Item10.BackgroundColor3 = Color3.fromRGB(70,70,70)
