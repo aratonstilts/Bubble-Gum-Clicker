@@ -21,7 +21,26 @@ local claimingChests = false
 
 print("looks like", Player, "and mouse is connected!")
 
+
+local allCodes = {"underthesea", "spongebob", "gofast", "secrets", "season1", "bubblegum"}
+
+
 --adding functions here!--
+local function redeemCode(code)
+    local args = {
+    [1] = {
+        [1] = {
+            [1] = code
+        },
+        [2] = {
+            [1] = false
+        }
+    }
+    }
+
+    game:GetService("ReplicatedStorage"):WaitForChild("Remotes"):WaitForChild("redeem twitter code"):InvokeServer(unpack(args))
+end
+
 local function claimChests()
     local originalCFrame = HR.CFrame
     
@@ -486,7 +505,7 @@ end)
 local textLabel4 = Instance.new("TextLabel")
 textLabel4.Parent = CmdHandler
 textLabel4.Size = UDim2.new(.8,0,.1,0)
-textLabel4.Position = UDim2.new(1, 0, 1.3, 0)
+textLabel4.Position = UDim2.new(1, 0, 1.35, 0)
 textLabel4.AnchorPoint = Vector2.new(1,0)
 textLabel4.Text = "Sell Bubbles Every 2 Minutes"
 textLabel4.TextColor3 = Color3.new(1, 1, 1)
@@ -494,7 +513,7 @@ textLabel4.BackgroundTransparency = 1
 textLabel4.TextScaled = true
 
 local Item4 = Instance.new("TextButton")
-Item4.Position = UDim2.new(0.1,0,1.3,1)
+Item4.Position = UDim2.new(0.1,0,1.35,1)
 Item4.Size = UDim2.new(.1,0,.1,0)
 Item4.BackgroundColor3 = Color3.fromRGB(70,70,70)
 Item4.BorderColor3 = Color3.new(1,1,1)
@@ -761,6 +780,33 @@ Item10.MouseButton1Click:Connect(function()
         return
     end
     Item10.BackgroundColor3 = Color3.fromRGB(70,70,70)
+end)
+
+
+local textLabel11 = Instance.new("TextLabel")
+textLabel11.Parent = CmdHandler
+textLabel11.Size = UDim2.new(.8,0,.1,0)
+textLabel11.Position = UDim2.new(1, 0, 1.5, 0)
+textLabel11.AnchorPoint = Vector2.new(1,0)
+textLabel11.Text = "Redeem All Codes"
+textLabel11.TextColor3 = Color3.new(1, 1, 1)
+textLabel11.BackgroundTransparency = 1
+textLabel11.TextScaled = true
+
+local Item11 = Instance.new("TextButton")
+Item11.Position = UDim2.new(0.1,0,1.5,1)
+Item11.Size = UDim2.new(.1,0,.1,0)
+Item11.BackgroundColor3 = Color3.fromRGB(70,70,70)
+Item11.BorderColor3 = Color3.new(1,1,1)
+Item11.ZIndex = 2
+Item11.Parent = CmdHandler
+Item11.Text = ""
+Item11.TextColor3 = Color3.fromRGB(250,250,250)
+Item11.TextScaled = true
+Item11.MouseButton1Click:Connect(function()
+    for i,v in pairs(allCodes) do
+        redeemCode(v)
+    end
 end)
 
 end
