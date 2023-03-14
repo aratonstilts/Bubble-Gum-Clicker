@@ -260,11 +260,52 @@ end
 
 
 
-
-
-
-
 --now a couple functions to create the GUI--
+
+local function createSpawnWorldEggList(parent)
+    local Background = Instance.new("Frame")
+    local CmdHandler = Instance.new("ScrollingFrame")
+    Background.Name = "Background2"
+    Background.Parent = parent
+    Background.BackgroundColor3 = Color3.fromRGB(25, 25, 25)
+    Background.BorderSizePixel = 0
+    Background.BorderColor3 = Color3.new(1,0,1)
+    Background.Position = UDim2.new(1, 0, 0, 0)
+    Background.Size = UDim2.new(0.6, 0, 1, 0)
+    Background.Active = true
+    Background.Visible = false
+    
+    CmdHandler.Name = "CmdHandler2"
+    CmdHandler.Parent = Background
+    CmdHandler.Active = true
+    CmdHandler.BackgroundColor3 = Color3.fromRGB(5, 5, 5)
+    CmdHandler.BackgroundTransparency = 1.000
+    CmdHandler.BorderSizePixel = 0
+    CmdHandler.AutomaticCanvasSize = "Y"
+    CmdHandler.Position = UDim2.new(0, 0, 0.12, 0)
+    CmdHandler.Size = UDim2.new(1, 0, 1, 0)
+    CmdHandler.ScrollBarThickness = 4
+    
+    
+    local YPos = 1
+    for i,v in pairs(game:GetService("ReplicatedStorage")["Game Objects"].Eggs["Spawn World"]:GetChildren()) do
+    print(v.Name)
+    local Eggz = Instance.new("TextButton")
+    Eggz.Name = v.Name
+    Eggz.Position = UDim2.new(0,1,0,YPos)
+    Eggz.Size = UDim2.new(1,0,0,25)
+    Eggz.BackgroundColor3 = Color3.fromRGB(70,70,70)
+    Eggz.BorderColor3 = Color3.new(1,1,1)
+    Eggz.ZIndex = 2
+    Eggz.Parent = CmdHandler
+    Eggz.Text = v.Name
+    Eggz.TextColor3 = Color3.fromRGB(250,250,250)
+    Eggz.TextScaled = true
+    YPos = YPos + 25
+    end
+    
+    return Background, CmdHandler
+end
 
 local function createMainBackground()
     local CmdGui = Instance.new("ScreenGui")
@@ -543,38 +584,51 @@ Item6.MouseButton1Click:Connect(function()
 end)
 
 
-local textLabel7 = Instance.new("TextLabel")
-textLabel7.Parent = CmdHandler
-textLabel7.Size = UDim2.new(.8,0,.1,0)
-textLabel7.Position = UDim2.new(1, 0, 0.6, 0)
-textLabel7.AnchorPoint = Vector2.new(1,0)
-textLabel7.Text = "Open Season 2 Egg"
-textLabel7.TextColor3 = Color3.new(1, 1, 1)
-textLabel7.BackgroundTransparency = 1
-textLabel7.TextScaled = true
+local background, handler = createSpawnWorldEggList(Background)
 
-local Item7 = Instance.new("TextButton")
-Item7.Position = UDim2.new(0.1,0,0.6,1)
-Item7.Size = UDim2.new(.1,0,.1,0)
-Item7.BackgroundColor3 = Color3.fromRGB(70,70,70)
-Item7.BorderColor3 = Color3.new(1,1,1)
-Item7.ZIndex = 2
-Item7.Parent = CmdHandler
-Item7.Text = ""
-Item7.TextColor3 = Color3.fromRGB(250,250,250)
-Item7.TextScaled = true
-Item7.MouseButton1Click:Connect(function()
-    if Item7.BackgroundColor3 == Color3.fromRGB(70,70,70) then
-        Item7.BackgroundColor3 = Color3.fromRGB(200,70,70)
-        repeat
-            hatchEgg("Season 2 Egg")
-            task.wait()
-        until Item7.BackgroundColor3 == Color3.fromRGB(70,70,70) or _G.CLOSED
+local Eggs = Instance.new("TextButton")
+Eggs.Parent = CmdHandler
+Eggs.Size = UDim2.new(.8,0,.1,0)
+Eggs.Position = UDim2.new(0.5, 0, 0.6, 0)
+Eggs.AnchorPoint = Vector2.new(.5,0)
+Eggs.Text = "Open Eggs >"
+Eggs.TextColor3 = Color3.new(1, 1, 1)
+Eggs.BackgroundTransparency = 0
+Eggs.BackgroundColor3 = Color3.fromRGB(20,20,20)
+Eggs.BorderColor3 = Color3.fromRGB(255,255,255)
+Eggs.BorderSizePixel = 2
+Eggs.TextScaled = true
+Eggs.MouseButton1Click:Connect(function()
+    print(background.Visible)
+    if background.Visible == true then
+        Eggs.Text = "Open Eggs >"
+        Eggs.BackgroundColor3 = Color3.fromRGB(20,20,20)
+        background.Visible = false
         return
     end
-    Item7.BackgroundColor3 = Color3.fromRGB(70,70,70)
+    Eggs.Text = "Open Eggs <"
+    Eggs.BackgroundColor3 = Color3.fromRGB(150,150,150)
+    background.Visible = true
 end)
 
+for i,v in pairs(handler:GetChildren()) do
+    v.MouseButton1Click:Connect(function()
+        if Eggies then
+            Eggies = false
+            v.BackgroundColor3 = Color3.fromRGB(70,70,70)
+            Plr.PlayerGui.ScreenGui.Enabled = true
+            wait(3)
+            Plr.PlayerGui.ScreenGui.Enabled = true
+        else
+            Eggies = true
+            v.BackgroundColor3 = Color3.new(0,1,1)
+            while Eggies  do
+                task.wait()
+                hatchEgg(v.Name)
+            end
+        end
+    end)
+end
 
 local textLabel8 = Instance.new("TextLabel")
 textLabel8.Parent = CmdHandler
