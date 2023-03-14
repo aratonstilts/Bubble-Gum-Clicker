@@ -17,6 +17,7 @@ local HR = Character.HumanoidRootPart
 
 local Noclipping
 _G.CLOSED = true
+local claimingChests = false
 
 print("looks like", Player, "and mouse is connected!")
 
@@ -531,7 +532,9 @@ Item6.MouseButton1Click:Connect(function()
     if Item6.BackgroundColor3 == Color3.fromRGB(70,70,70) then
         Item6.BackgroundColor3 = Color3.fromRGB(200,70,70)
         repeat
+            claimingChests = true
             claimChests()
+            claimingChests = false
             task.wait(920)
         until Item6.BackgroundColor3 == Color3.fromRGB(70,70,70) or _G.CLOSED
         return
@@ -690,9 +693,9 @@ Item10.MouseButton1Click:Connect(function()
             
             pos = HR.Position
             
-            if notMoving < 10 then
+            if notMoving < 10 and claimingChests == false then
                 walkToClosestRainbow(true)
-            else
+            elseif claimingChests == false then
                 walkToClosestRainbow(false)
             end
             
