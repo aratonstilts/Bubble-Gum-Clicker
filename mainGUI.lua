@@ -65,6 +65,26 @@ local function claimChests()
     end
 end
 
+local function claimAtlantisChests()
+    local originalCFrame = HR.CFrame
+    
+    local chestPositions = {
+    Vector3.new(-53, -6, 1272), -- Bottom chest
+    Vector3.new(4, 1018, 1250), -- Coral chest
+    Vector3.new(3, 25015, 1271), -- Deep Ocean chest
+    Vector3.new(-0, 50107, 1271) --The Lost City Chest
+    }
+    for i,v in pairs(chestPositions) do
+        HR.CFrame = CFrame.new(v)
+        task.wait(1)
+    end
+    
+    for i = 1,2 do
+        HR.CFrame = originalCFrame
+        task.wait(0.3)
+    end
+end
+
 local function NoclipLoop()
     if noClip == true then
         for _, child in pairs(Character:GetDescendants()) do
@@ -654,7 +674,7 @@ textLabel8.Parent = CmdHandler
 textLabel8.Size = UDim2.new(.8,0,.1,0)
 textLabel8.Position = UDim2.new(1, 0, 0.75, 0)
 textLabel8.AnchorPoint = Vector2.new(1,0)
-textLabel8.Text = "Auto Delete S2 Imp"
+textLabel8.Text = "Auto Claim Chests (Atlantis)"
 textLabel8.TextColor3 = Color3.new(1, 1, 1)
 textLabel8.BackgroundTransparency = 1
 textLabel8.TextScaled = true
@@ -673,8 +693,10 @@ Item8.MouseButton1Click:Connect(function()
     if Item8.BackgroundColor3 == Color3.fromRGB(70,70,70) then
         Item8.BackgroundColor3 = Color3.fromRGB(200,70,70)
         repeat
-            deletePet("S2 Imp")
-            task.wait(60)
+            claimingChests = true
+            claimAtlantisChests()
+            claimingChests = false
+            task.wait(920)
         until Item8.BackgroundColor3 == Color3.fromRGB(70,70,70) or _G.CLOSED
         return
     end
