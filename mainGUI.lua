@@ -343,6 +343,22 @@ local function createSpawnWorldEggList(parent)
     YPos = YPos + 25
     end
     
+    for i,v in pairs(game:GetService("ReplicatedStorage")["Game Objects"].Eggs["Atlantis"]:GetChildren()) do
+    print(v.Name)
+    local Eggz = Instance.new("TextButton")
+    Eggz.Name = v.Name
+    Eggz.Position = UDim2.new(0,1,0,YPos)
+    Eggz.Size = UDim2.new(1,0,0,25)
+    Eggz.BackgroundColor3 = Color3.fromRGB(70,70,70)
+    Eggz.BorderColor3 = Color3.new(1,1,1)
+    Eggz.ZIndex = 2
+    Eggz.Parent = CmdHandler
+    Eggz.Text = v.Name
+    Eggz.TextColor3 = Color3.fromRGB(250,250,250)
+    Eggz.TextScaled = true
+    YPos = YPos + 25
+    end
+    
     return Background, CmdHandler
 end
 
