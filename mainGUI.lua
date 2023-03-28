@@ -19,8 +19,7 @@ local Noclipping
 _G.CLOSED = true
 local claimingChests = false
 
-print("stayfrosty", "lucky", "scramble", "OPE", "looks like", Player, "and mouse is connected!")
-
+print("hello")
 
 local allCodes = {"banana", "bandana", "nana", "underthesea", "spongebob", "gofast", "secrets", "season1", "bubblegum"}
 
@@ -716,6 +715,39 @@ Item8.MouseButton1Click:Connect(function()
 end)
 
 
+
+local before9 = Instance.new("TextLabel")
+before9.Parent = CmdHandler
+before9.Size = UDim2.new(.55,0,.1,0)
+before9.Position = UDim2.new(.65, 0, 0.9, 0)
+before9.AnchorPoint = Vector2.new(.8,0)
+before9.Text = "Show Egg Quests"
+before9.TextColor3 = Color3.new(1, 1, 1)
+before9.BackgroundTransparency = 1
+before9.TextScaled = true
+
+local before9button = Instance.new("TextButton")
+before9button.Position = UDim2.new(0.1,0,0.9,1)
+before9button.Size = UDim2.new(.1,0,.1,0)
+before9button.BackgroundColor3 = Color3.fromRGB(70,70,70)
+before9button.BorderColor3 = Color3.new(1,1,1)
+before9button.ZIndex = 2
+before9button.Parent = CmdHandler
+before9button.Text = ""
+before9button.TextColor3 = Color3.fromRGB(250,250,250)
+before9button.TextScaled = true
+before9button.MouseButton1Click:Connect(function()
+    local eggQuests = PlayerGui["Egg Quests"]
+    if eggQuests.Enabled == true then
+        eggQuests.Enabled = false
+    else
+        eggQuests.Enabled = true
+    end
+end)
+
+
+
+
 local textLabel9 = Instance.new("TextLabel")
 textLabel9.Parent = CmdHandler
 textLabel9.Size = UDim2.new(.55,0,.1,0)
@@ -725,6 +757,7 @@ textLabel9.Text = "Make Hellhounds Shiny"
 textLabel9.TextColor3 = Color3.new(1, 1, 1)
 textLabel9.BackgroundTransparency = 1
 textLabel9.TextScaled = true
+textLabel9.Visible = false
 
 local textBox9 = Instance.new("TextBox")
 textBox9.Position = UDim2.new(1, 0, 0.9, 0)
@@ -739,6 +772,7 @@ textBox9.Text = ""
 textBox9.PlaceholderText = "Amount to use"
 textBox9.TextColor3 = Color3.fromRGB(250,250,250)
 textBox9.TextScaled = true
+textBox9.Visible = false
 
 local Item9 = Instance.new("TextButton")
 Item9.Position = UDim2.new(0.1,0,0.9,1)
@@ -750,6 +784,7 @@ Item9.Parent = CmdHandler
 Item9.Text = ""
 Item9.TextColor3 = Color3.fromRGB(250,250,250)
 Item9.TextScaled = true
+Item9.Visible = false
 Item9.MouseButton1Click:Connect(function()
     if Item9.BackgroundColor3 == Color3.fromRGB(70,70,70) then
         Item9.BackgroundColor3 = Color3.fromRGB(200,70,70)
