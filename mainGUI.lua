@@ -726,6 +726,14 @@ before9.TextColor3 = Color3.new(1, 1, 1)
 before9.BackgroundTransparency = 1
 before9.TextScaled = true
 
+local function cutOnEggQuestGUI()
+    local eggQuests = PlayerGui["Egg Quests"]
+    if eggQuests.Enabled == false then
+        eggQuests.Enabled = true
+        return
+    end
+end
+
 local before9button = Instance.new("TextButton")
 before9button.Position = UDim2.new(0.1,0,0.9,1)
 before9button.Size = UDim2.new(.1,0,.1,0)
@@ -737,11 +745,14 @@ before9button.Text = ""
 before9button.TextColor3 = Color3.fromRGB(250,250,250)
 before9button.TextScaled = true
 before9button.MouseButton1Click:Connect(function()
-    local eggQuests = PlayerGui["Egg Quests"]
-    if eggQuests.Enabled == true then
-        eggQuests.Enabled = false
+    if isQuesting then
+        before9button.TextColor3 = Color3.fromRGB(250,0,0)
+        isQuesting = false
+        questing:Disconnect()
     else
-        eggQuests.Enabled = true
+        before9button.TextColor3 = Color3.fromRGB(250,250,250)
+        isQuesting = true
+        questing = game:GetService('RunService').Stepped:Connect(cutOnEggQuestGUI)
     end
 end)
 
