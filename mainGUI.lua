@@ -19,10 +19,10 @@ local Noclipping
 _G.CLOSED = true
 local claimingChests = false
 
-print("looks like", Player, "and mouse is connected!")
+print("stayfrosty", "lucky", "scramble", "OPE", "looks like", Player, "and mouse is connected!")
 
 
-local allCodes = {"underthesea", "spongebob", "gofast", "secrets", "season1", "bubblegum"}
+local allCodes = {"banana", "bandana", "nana", "underthesea", "spongebob", "gofast", "secrets", "season1", "bubblegum"}
 
 
 --adding functions here!--
@@ -45,18 +45,16 @@ local function claimChests()
     local originalCFrame = HR.CFrame
     
     local chestPositions = {
-    Vector3.new(-349, 4, -493), -- group rewards
-    Vector3.new(-414, 50001, -562), -- xp chest
-    Vector3.new(-399, 33374, -605), -- void chest
-    Vector3.new(-399, 11342, -561), --Heaven Chest
-    Vector3.new(-393, 963, -581), -- first chest
-    Vector3.new(-593, 10, -536), -- VIP Chest
-    Vector3.new(-386, 10, -297) -- Luck area
+    Vector3.new(-349, 14, -508), -- group rewards
+    Vector3.new(-419, 50017, -583), -- xp chest
+    Vector3.new(-401, 33384, -627), -- void chest
+    Vector3.new(-398, 11352, -582), --Heaven Chest
+    Vector3.new(-393, 972, -605), -- first chest
+    Vector3.new(-594, 10, -557) -- VIP Chest
     }
     for i,v in pairs(chestPositions) do
         HR.CFrame = CFrame.new(v)
-        Humanoid:MoveTo(HR.Position + Vector3.new(0,0,-20))
-        Humanoid.MoveToFinished:Wait()
+        task.wait(0.5)
     end
     
     for i = 1,2 do
@@ -111,20 +109,18 @@ end
 
 
 local function getPickupFolders()
-    local diamonds = {}
+    local folders = {}
 for i,v in pairs(game.Workspace.Stuff.Pickups:GetChildren()) do
-    table.insert(diamonds, v)
+    table.insert(folders, v)
 end
-return diamonds
+return folders
 end
 
 local function getRainbows()
     local pickupFolders = getPickupFolders()
     local rainbows = {}
     for i,v in pairs(pickupFolders) do
-        if v:FindFirstChild("Pot O' Gold") or v:FindFirstChild("Rainbow") then
-            table.insert(rainbows, v:GetChildren()[1])
-        end
+        table.insert(rainbows, v:GetChildren()[1])
     end
     
     table.sort(rainbows, function(t1, t2) 
@@ -772,7 +768,7 @@ textLabel10.Parent = CmdHandler
 textLabel10.Size = UDim2.new(.8,0,.1,0)
 textLabel10.Position = UDim2.new(1, 0, 0.45, 0)
 textLabel10.AnchorPoint = Vector2.new(1,0)
-textLabel10.Text = "Auto Walk To Rainbow Currency"
+textLabel10.Text = "Auto Walk To Nearby Currency"
 textLabel10.TextColor3 = Color3.new(1, 1, 1)
 textLabel10.BackgroundTransparency = 1
 textLabel10.TextScaled = true
