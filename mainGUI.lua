@@ -49,7 +49,7 @@ local function claimChests()
     Vector3.new(-401, 33384, -627), -- void chest
     Vector3.new(-398, 11352, -582), --Heaven Chest
     Vector3.new(-393, 972, -605), -- first chest
-    Vector3.new(-594, 10, -557) -- VIP Chest
+    Vector3.new(-594, 25, -557) -- VIP Chest
     }
     for i,v in pairs(chestPositions) do
         HR.CFrame = CFrame.new(v)
