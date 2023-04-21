@@ -278,8 +278,8 @@ local function hatchEgg(egg)
     local args = {
     [1] = {
         [1] = {
-            [1] = egg,
-            [2] = true
+            [1] = "Common Egg",
+            [2] = 4
         },
         [2] = {
             [1] = false,
@@ -288,7 +288,7 @@ local function hatchEgg(egg)
     }
 }
 
-game:GetService("ReplicatedStorage").Remotes["buy egg"]:InvokeServer(unpack(args))
+game:GetService("ReplicatedStorage"):WaitForChild("Remotes"):WaitForChild("buy egg"):InvokeServer(unpack(args))
 
 end
 
