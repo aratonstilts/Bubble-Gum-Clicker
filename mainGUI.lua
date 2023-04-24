@@ -21,7 +21,7 @@ local claimingChests = false
 
 print("hello")
 
-local allCodes = {"banana", "bandana", "nana", "underthesea", "spongebob", "gofast", "secrets", "season1", "bubblegum"}
+local allCodes = {"happyeaster", "banana", "bandana", "nana", "underthesea", "spongebob", "gofast", "secrets", "season1", "bubblegum"}
 
 
 --adding functions here!--
