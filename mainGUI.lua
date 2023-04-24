@@ -25,6 +25,23 @@ local allCodes = {"banana", "bandana", "nana", "underthesea", "spongebob", "gofa
 
 
 --adding functions here!--
+local function claimDarkWorldQuest()
+    difficulties = {"Easy", "Medium", "Hard"}
+    for _,difficulty in pairs(difficulties) do
+        local args = {
+        [1] = {
+        [1] = {
+        [1] = difficulty
+        },
+        [2] = {
+        [1] = false
+        }
+        }
+        }
+        game:GetService("ReplicatedStorage"):WaitForChild("Remotes"):WaitForChild("claim dark quest"):InvokeServer(unpack(args))
+    end
+end
+
 local function redeemCode(code)
     local args = {
     [1] = {
@@ -129,19 +146,15 @@ local function getRainbows()
 end
 
 local function walkToClosestRainbow(moving)
-    
     if moving then
         local rainbow = getRainbows()[1]
-    
-        Humanoid:MoveTo(rainbow.Position)
-        Humanoid.MoveToFinished:Wait()
+        
+        HR.CFrame = rainbow.CFrame
         return
     end
     
     local rainbow = getRainbows()[2]
-    
-    Humanoid:MoveTo(rainbow.Position)
-    Humanoid.MoveToFinished:Wait()
+    HR.CFrame = rainbow.CFrame
     
 end
 
@@ -814,7 +827,7 @@ textLabel10.Parent = CmdHandler
 textLabel10.Size = UDim2.new(.8,0,.1,0)
 textLabel10.Position = UDim2.new(1, 0, 0.45, 0)
 textLabel10.AnchorPoint = Vector2.new(1,0)
-textLabel10.Text = "Auto Walk To Nearby Currency"
+textLabel10.Text = "TP To Nearby Currency"
 textLabel10.TextColor3 = Color3.new(1, 1, 1)
 textLabel10.BackgroundTransparency = 1
 textLabel10.TextScaled = true
@@ -831,8 +844,6 @@ Item10.TextColor3 = Color3.fromRGB(250,250,250)
 Item10.TextScaled = true
 Item10.MouseButton1Click:Connect(function()
     if Item10.BackgroundColor3 == Color3.fromRGB(70,70,70) then
-        Noclipping = game:GetService('RunService').Stepped:Connect(NoclipLoop)
-        noClip = true
         
         local pos
         local notMoving = 0
@@ -846,17 +857,16 @@ Item10.MouseButton1Click:Connect(function()
             
             pos = HR.Position
             
+            print(notMoving)
+            
             if notMoving < 10 and claimingChests == false then
                 walkToClosestRainbow(true)
             elseif claimingChests == false then
                 walkToClosestRainbow(false)
             end
             
-            task.wait()
+            wait(0.1)
         until Item10.BackgroundColor3 == Color3.fromRGB(70,70,70) or _G.CLOSED
-        
-        Noclipping:Disconnect()
-        noClip = false
         return
     end
     Item10.BackgroundColor3 = Color3.fromRGB(70,70,70)
@@ -887,6 +897,39 @@ Item11.MouseButton1Click:Connect(function()
     for i,v in pairs(allCodes) do
         redeemCode(v)
     end
+end)
+
+local textLabel12 = Instance.new("TextLabel")
+textLabel12.Parent = CmdHandler
+textLabel12.Size = UDim2.new(.8,0,.1,0)
+textLabel12.Position = UDim2.new(1, 0, 1.65, 0)
+textLabel12.AnchorPoint = Vector2.new(1,0)
+textLabel12.Text = "Auto Complete Dark Quests"
+textLabel12.TextColor3 = Color3.new(1, 1, 1)
+textLabel12.BackgroundTransparency = 1
+textLabel12.TextScaled = true
+
+local Item12 = Instance.new("TextButton")
+Item12.Position = UDim2.new(0.1,0,1.65,1)
+Item12.Size = UDim2.new(.1,0,.1,0)
+Item12.BackgroundColor3 = Color3.fromRGB(70,70,70)
+Item12.BorderColor3 = Color3.new(1,1,1)
+Item12.ZIndex = 2
+Item12.Parent = CmdHandler
+Item12.Text = ""
+Item12.TextColor3 = Color3.fromRGB(250,250,250)
+Item12.TextScaled = true
+Item12.MouseButton1Click:Connect(function()
+    if Item12.BackgroundColor3 == Color3.fromRGB(70,70,70) then
+        Item12.BackgroundColor3 = Color3.fromRGB(200,70,70)
+        repeat
+            claimDarkWorldQuest()
+            task.wait(5)
+        until Item12.BackgroundColor3 == Color3.fromRGB(70,70,70) or _G.CLOSED
+        return
+        
+    end
+    Item12.BackgroundColor3 = Color3.fromRGB(70,70,70)
 end)
 
 end
